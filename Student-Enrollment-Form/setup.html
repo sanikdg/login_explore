@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Setup JsonPowerDB Database</title>
+    <style>
+        body { font-family: Arial; margin: 20px; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; background: #007bff; color: white; border: none; border-radius: 5px; }
+        button:hover { background: #0056b3; }
+        pre { background: #f0f0f0; padding: 10px; border-radius: 5px; overflow-x: auto; margin-top: 20px; }
+        .success { color: green; font-weight: bold; }
+        .error { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Setup JsonPowerDB Database</h1>
+    <p>Click the button below to create the SCHOOL-DB database and STUDENT-TABLE table.</p>
+    <p><strong>Note:</strong> Make sure the proxy server is running: <code>node server.js</code></p>
+    
+    <button onclick="setupDatabase()">Setup Database & Table</button>
+    
+    <h3>Status:</h3>
+    <pre id="result">Waiting...</pre>
+
+    <script>
+        const token = "90935084|-31949246484510594|90903558";
+
+        function setupDatabase() {
+            document.getElementById('result').textContent = 'Setting up database...';
+            
+            // Create the database by inserting a template record
+            // JPDB auto-creates the database and relation on first insert
+            const templateData = {
+                'Roll-No': 1,
+                'Full-Name': 'Sample Student',
+                'Class': '10',
+                'Birth-Date': '2010-01-01',
+                'Address': 'Sample Address',
+                'Enrollment-Date': '2026-07-03'
+            };
+
+            const data = {
+                token: token,
+                cmd: "PUT",
+                dbName: "SCHOOL-DB",
+                rel: "STUDENT-TABLE",
+                jsonStr: templateData  // Object, not stringified
+            };
+
+            console.log('Sending setup request:', JSON.stringify(data, null, 2));
+
+            fetch('http://localhost:3000/api/iml', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(r => r.json())
+            .then(json => {
+                console.log('Response:', json);
+                const formatted = JSON.stringify(json, null, 2);
+                
+                if (json.status === 200) {
+                    document.getElementById('result').innerHTML = 
+                        '<span class="success">✓ Database setup successful!</span>\n\nResponse:\n' + formatted;
+                    setTimeout(() => {
+                        alert('Database created successfully! Now you can use the enrollment form.');
+                    }, 1000);
+                } else {
+                    document.getElementById('result').innerHTML = 
+                        '<span class="error">✗ Setup failed: ' + json.message + '</span>\n\nResponse:\n' + formatted;
+                }
+            })
+            .catch(e => {
+                const msg = 'Error: ' + e.message + '\n\nMake sure the proxy server is running (node server.js)';
+                document.getElementById('result').textContent = msg;
+                console.error('Error:', e);
+            });
+        }
+    </script>
+</body>
+</html>

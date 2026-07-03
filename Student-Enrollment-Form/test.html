@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JsonPowerDB Connection Test</title>
+    <style>
+        body { font-family: Arial; margin: 20px; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; background: #007bff; color: white; border: none; border-radius: 5px; }
+        button:hover { background: #0056b3; }
+        pre { background: #f0f0f0; padding: 10px; border-radius: 5px; overflow-x: auto; }
+        .success { color: green; }
+        .error { color: red; }
+        input { padding: 8px; margin: 5px; border: 1px solid #ccc; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <h1>JsonPowerDB API Test</h1>
+    <p>Make sure the proxy server is running: <code>node server.js</code></p>
+    
+    <div>
+        <label>Roll No to search: <input type="number" id="searchRollNo" value="100"></label>
+    </div>
+    <br>
+    
+    <button onclick="testInsert()">Test INSERT (PUT)</button>
+    <button onclick="testGetByKey()">Test GET By Key</button>
+    <button onclick="testGetFirst()">Test GET First Record</button>
+    
+    <h3>Response:</h3>
+    <pre id="result">Waiting...</pre>
+
+    <script>
+        const token = "90935084|-31949246484510594|90903558";
+        const dbName = "SCHOOL-DB";
+        const relName = "STUDENT-TABLE";
+
+        function showResult(label, data) {
+            const el = document.getElementById('result');
+            const formatted = typeof data === 'object' ? JSON.stringify(data, null, 2) : data;
+            el.textContent = `[${label}]\n\n${formatted}`;
+        }
+
+        function testInsert() {
+            const recordData = {
+                'Roll-No': 888,
+                'Full-Name': 'Test Student',
+                'Class': '10',
+                'Birth-Date': '2010-01-01',
+                'Address': 'Test Address 123',
+                'Enrollment-Date': '2026-07-03'
+            };
+
+            const data = {
+                token: token,
+                cmd: "PUT",
+                dbName: dbName,
+                rel: relName,
+                jsonStr: recordData  // Object, not stringified
+            };
+
+            console.log('Sending PUT:', JSON.stringify(data, null, 2));
+
+            fetch('http://localhost:3000/api/iml', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(r => r.json())
+            .then(json => {
+                showResult('INSERT', json);
+                console.log('Response:', json);
+            })
+            .catch(e => {
+                showResult('INSERT ERROR', e.message);
+                console.error('Error:', e);
+            });
+        }
+
+        function testGetByKey() {
+            const rollNo = parseInt(document.getElementById('searchRollNo').value) || 100;
+            
+            const data = {
+                token: token,
+                dbName: dbName,
+                rel: relName,
+                cmd: "GET_BY_KEY",
+                jsonStr: {
+                    "Roll-No": rollNo
+                }
+            };
+
+            fetch('http://localhost:3000/api/irl', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(r => r.json())
+            .then(json => {
+                // Parse nested data string
+                if (json.data && typeof json.data === 'string') {
+                    try { json.data = JSON.parse(json.data); } catch(e) {}
+                }
+                showResult(`GET_BY_KEY (Roll-No: ${rollNo})`, json);
+                console.log('Response:', json);
+            })
+            .catch(e => {
+                showResult('GET ERROR', e.message);
+                console.error('Error:', e);
+            });
+        }
+
+        function testGetFirst() {
+            const data = {
+                token: token,
+                dbName: dbName,
+                rel: relName,
+                cmd: "FIRST_RECORD"
+            };
+
+            fetch('http://localhost:3000/api/irl', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(r => r.json())
+            .then(json => {
+                if (json.data && typeof json.data === 'string') {
+                    try { json.data = JSON.parse(json.data); } catch(e) {}
+                }
+                showResult('FIRST_RECORD', json);
+                console.log('Response:', json);
+            })
+            .catch(e => {
+                showResult('GET ERROR', e.message);
+                console.error('Error:', e);
+            });
+        }
+    </script>
+</body>
+</html>

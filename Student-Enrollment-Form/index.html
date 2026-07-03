@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Enrollment Form</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Main Container -->
+    <div class="min-vh-100 d-flex align-items-center justify-content-center py-4">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6 col-md-8 col-sm-12">
+                    <!-- Card Container -->
+                    <div class="card shadow-lg border-0 rounded-4 form-card">
+                        <!-- Card Header -->
+                        <div class="card-header bg-gradient text-white rounded-top-4 py-4">
+                            <h2 class="text-center mb-0 fw-bold">
+                                <i class="bi bi-person-plus"></i> Student Enrollment Form
+                            </h2>
+                        </div>
+
+                        <!-- Card Body -->
+                        <div class="card-body p-5">
+                            <!-- Alert Messages -->
+                            <div id="alertContainer"></div>
+
+                            <!-- Form -->
+                            <form id="enrollmentForm" novalidate>
+                                <!-- Roll Number -->
+                                <div class="mb-4">
+                                    <label for="rollNo" class="form-label fw-semibold">Roll No <span class="text-danger">*</span></label>
+                                    <input 
+                                        type="text" 
+                                        class="form-control form-control-lg rounded-3 input-focus" 
+                                        id="rollNo" 
+                                        placeholder="Enter Roll Number"
+                                        required
+                                    >
+                                    <small class="text-muted">Numeric value required</small>
+                                </div>
+
+                                <!-- Full Name -->
+                                <div class="mb-4">
+                                    <label for="fullName" class="form-label fw-semibold">Full Name <span class="text-danger">*</span></label>
+                                    <input 
+                                        type="text" 
+                                        class="form-control form-control-lg rounded-3 input-focus" 
+                                        id="fullName" 
+                                        placeholder="Enter Full Name"
+                                        disabled
+                                        required
+                                    >
+                                </div>
+
+                                <!-- Class -->
+                                <div class="mb-4">
+                                    <label for="class" class="form-label fw-semibold">Class <span class="text-danger">*</span></label>
+                                    <select 
+                                        class="form-select form-select-lg rounded-3 input-focus" 
+                                        id="class"
+                                        disabled
+                                        required
+                                    >
+                                        <option value="">Select Class</option>
+                                        <option value="10">Class 10</option>
+                                        <option value="11">Class 11</option>
+                                        <option value="12">Class 12</option>
+                                    </select>
+                                </div>
+
+                                <!-- Birth Date -->
+                                <div class="mb-4">
+                                    <label for="birthDate" class="form-label fw-semibold">Birth Date <span class="text-danger">*</span></label>
+                                    <input 
+                                        type="date" 
+                                        class="form-control form-control-lg rounded-3 input-focus" 
+                                        id="birthDate"
+                                        disabled
+                                        required
+                                    >
+                                </div>
+
+                                <!-- Address -->
+                                <div class="mb-4">
+                                    <label for="address" class="form-label fw-semibold">Address <span class="text-danger">*</span></label>
+                                    <textarea 
+                                        class="form-control form-control-lg rounded-3 input-focus" 
+                                        id="address" 
+                                        rows="3"
+                                        placeholder="Enter Address"
+                                        disabled
+                                        required
+                                    ></textarea>
+                                </div>
+
+                                <!-- Enrollment Date -->
+                                <div class="mb-4">
+                                    <label for="enrollmentDate" class="form-label fw-semibold">Enrollment Date <span class="text-danger">*</span></label>
+                                    <input 
+                                        type="date" 
+                                        class="form-control form-control-lg rounded-3 input-focus" 
+                                        id="enrollmentDate"
+                                        disabled
+                                        required
+                                    >
+                                </div>
+
+                                <!-- Buttons Container -->
+                                <div class="d-grid gap-2 d-sm-flex justify-content-center mt-5">
+                                    <button 
+                                        type="button" 
+                                        class="btn btn-success btn-lg rounded-3 fw-semibold px-5" 
+                                        id="saveBtn"
+                                        disabled
+                                    >
+                                        <i class="bi bi-check-circle"></i> Save
+                                    </button>
+                                    <button 
+                                        type="button" 
+                                        class="btn btn-info btn-lg rounded-3 fw-semibold px-5 text-white" 
+                                        id="updateBtn"
+                                        disabled
+                                    >
+                                        <i class="bi bi-pencil-square"></i> Update
+                                    </button>
+                                    <button 
+                                        type="button" 
+                                        class="btn btn-warning btn-lg rounded-3 fw-semibold px-5" 
+                                        id="resetBtn"
+                                        disabled
+                                    >
+                                        <i class="bi bi-arrow-clockwise"></i> Reset
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Card Footer -->
+                        <div class="card-footer bg-light rounded-bottom-4 py-3">
+                            <small class="text-muted d-block text-center">
+                                <i class="bi bi-database"></i> Powered by JsonPowerDB
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <!-- JsonPowerDB Commons -->
+    <script src="jpdb-commons.js"></script>
+    <!-- Main Script -->
+    <script src="script.js"></script>
+</body>
+</html>
